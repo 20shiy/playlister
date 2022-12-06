@@ -94,6 +94,11 @@ function ListCard(props) {
         // setExpanded(!expanded);
     }
 
+    function handlePublish(event, id) {
+        store.handlePublish(id);
+        // store.loadPublishedLists();
+    }
+
     let selectClass = "unselected-list-card";
     if (selected) {
         selectClass = "selected-list-card";
@@ -101,6 +106,16 @@ function ListCard(props) {
     let cardStatus = false;
     if (store.isListNameEditActive) {
         cardStatus = true;
+    }
+
+    let backgroundColor = "white";
+    if(idNamePair.published) {
+        backgroundColor = "#d5d3f4";
+    }
+    
+    if(store.currentList && idNamePair._id == store.currentList._id) {
+        console.log("current Playing?");
+        backgroundColor = "#d3b242"
     }
     let cardElement =
         // <ListItem
@@ -130,13 +145,14 @@ function ListCard(props) {
             
             <Accordion 
                 className="list-card"
-                style={{borderRadius: "25px"}}
+                style={{borderRadius: "25px", backgroundColor: `${backgroundColor}`, borderStyle: "solid", borderWidth: "1px"}}
                 
                 >
                 <AccordionSummary
                     id={idNamePair._id}
                     key={idNamePair._id}
-                    sx={{borderRadius:"25px", p: "5px", bgcolor: '#8000F00F', marginTop: '5px', display: 'flex', p: 1 }}
+                    // className={cardClass}
+                    sx={{borderRadius:"25px", p: "5px", marginTop: '5px', display: 'flex', p: 1 }}
                     style={{width: '98%', fontSize: '18pt' }}
                     
                     // button
@@ -182,7 +198,10 @@ function ListCard(props) {
                             </Button>
                         </Stack>
                         <Stack direction="row" spacing={0}>
-                            <Button variant="contained">Publish</Button>
+                            <Button variant="contained"
+                                onClick={(event) => {handlePublish(event, idNamePair._id)}}>
+                                    Publish
+                            </Button>
                             <Button variant="contained" 
                                 onClick={(event) => {
                                     handleDeleteList(event, idNamePair._id)

@@ -535,6 +535,20 @@ input {
   cursor: pointer;
 }
 
+.cardClass-published {
+  background-color: #d5d3f4;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+}
+
+.cardClass-selected {
+  background-color: #d3b242;
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+}
+
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {

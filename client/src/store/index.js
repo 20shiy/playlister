@@ -420,6 +420,13 @@ function GlobalStoreContextProvider(props) {
 
     }
 
+    store.handlePublish = function (id) {
+        // GET THE LIST
+        let list = store.currentList;
+        list.published = true;
+        store.updateCurrentList();
+    }
+
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {
         async function asyncLoadIdNamePairs() {
@@ -694,7 +701,7 @@ function GlobalStoreContextProvider(props) {
         })
 
     }
-
+    
     store.incSong = function() {
         storeReducer({
             type: GlobalStoreActionType.LOAD_CURRENT_SONG,
