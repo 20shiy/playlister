@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -23,6 +24,7 @@ import Button from '@mui/material/Button'
     @author McKilla Gorilla
 */
 function ListCard(props) {
+    const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
@@ -134,8 +136,8 @@ function ListCard(props) {
                 <AccordionSummary
                     id={idNamePair._id}
                     key={idNamePair._id}
-                    sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
-                    style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
+                    sx={{borderRadius:"25px", p: "5px", bgcolor: '#8000F00F', marginTop: '5px', display: 'flex', p: 1 }}
+                    style={{width: '98%', fontSize: '18pt' }}
                     
                     // button
                     onClick={(event) => {
@@ -143,8 +145,12 @@ function ListCard(props) {
                     }}
                     expandIcon={<ExpandMore />}
                     aria-controls="panel1a-content"
-                >
-                    <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+                >   
+                    <div id="listTitle">
+                        <b>{idNamePair.name}</b>
+                        <p style={{fontSize: '8pt'}}>By: &nbsp; <u style={{color: "blue"}}>{idNamePair.userName}</u></p>
+                    </div>
+
                     {/* <Box sx={{ p: 1 }}>
                         <IconButton onClick={handleToggleEdit} aria-label='edit'>
                             <EditIcon style={{fontSize:'48pt'}} />
