@@ -13,8 +13,10 @@ export default function YouTubePlayerExample() {
 
     let songs = [];
     let control = "";
+    console.log(store.currentList);
     if(store.currentList) {
         songs = store.currentList.songs;
+        console.log(songs);
     }
 
     let currentSong = store.currentSongPlaying;

@@ -46,7 +46,15 @@ function WorkspaceScreen() {
                     />
                 ))  
             }
+            <div className="list-card unselected-list-card" style={{width:"90%"}} onClick={handleAddNewSong}>
+                <AddIcon style={{marginLeft: "50%"}}/>
+            </div>
         </List>
+    } else {
+        songs = 
+            <div className="list-card unselected-list-card" style={{width:"90%"}} onClick={handleAddNewSong}>
+                <AddIcon style={{marginLeft: "50%"}}/>
+            </div>
     }
     return (
         <div id="songListsComponent">
@@ -69,9 +77,7 @@ function WorkspaceScreen() {
             </div>
          </List>             */}
          {songs}
-         <div className="list-card unselected-list-card" onClick={handleAddNewSong}>
-            <AddIcon style={{marginLeft: "50%"}}/>
-        </div>
+         
          { modalJSX }
          </div>
     )

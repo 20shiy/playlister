@@ -53,12 +53,12 @@ const HomeScreen = () => {
             </Fab>
                 Your Playlists
             </div> */}
-            <Box id="list-selector-list">
+            <div id="list-selector-list">
                 {
                     listCard
                 }
                 <MUIDeleteModal />
-            </Box>
+            </div>
         </div>)
 }
 

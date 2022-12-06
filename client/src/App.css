@@ -151,9 +151,9 @@ body {
 
 #list-selector-list {
   position: absolute;
-  left: 0%;
+  left: 1%;
   top: 150px;
-  width: 100%;
+  width: 60%;
   height: 90%;
   display: flex;
   flex-direction: column;
@@ -174,10 +174,12 @@ body {
 .list-card,
 .selected-list-card,
 .unselected-list-card {
-  font-size: 18pt;
+  font-size: 12pt;
   margin: 10px;
-  padding: 20px;
+  padding: 10px;
   border-radius: 25px;
+  width: 150%;
+  margin-left: 10px;
 }
 
 .list-card:aria-disabled,
@@ -465,7 +467,7 @@ input {
 }
 
 #listCardsComponent {
-  width: 60%;
+  width: 55%;
   height: 90vh;
   display: flex;
   flex-direction: column;
@@ -475,6 +477,52 @@ input {
 #rightComponent {
   width: 40%;
   height: 80vh;
+}
+
+#playerAndControl {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#youtubeScreen {
+  height: 60%;
+  width: auto;
+}
+
+#youtubePlayerControls {
+  height: 40%;
+  width: 100%;
+  background-color: #d5d3f4;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#playerControlBar {
+  border-radius: 10px;
+  border-color: black;
+  border-width: 1px;
+  border-style: solid;
+  background-color: white;
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-left: 20px;
+  
+}
+
+#contentsPlaying {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 10px;
+  padding-top: 15px;
 }
 
 /* ANIMATIONS
