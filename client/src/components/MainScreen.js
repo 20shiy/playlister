@@ -45,6 +45,20 @@ const MainScreen = () => {
         store.closeCurrentList();
     }
 
+    function handleSelectHome() {
+        store.homeScreenSelected();
+
+    }
+
+    function handleSelectCommunity() {
+        store.communityScreenSelected();
+
+    }
+
+    function handleSelectUser() {
+        store.userScreenSelected();
+    }
+
     const menuId = 'primary-search-account-menu';
     const loggedOutMenu = (
         <Menu
@@ -103,10 +117,10 @@ const MainScreen = () => {
             return <AccountCircle />;
     }
 
-    // let iconClass = "icons-disabled";
-    // let homeIconClass = store.homeScreen ? "icons" : iconClass;
-    // let communityIconClass = store.communityScreen ? "icons" : iconClass;
-    // let userIconClass = store.userScreen ? "icons" : iconClass;
+    let iconClass = "icons-disabled";
+    let homeIconClass = store.homeScreen ? "icons" : iconClass;
+    let communityIconClass = store.communityScreen ? "icons" : iconClass;
+    let userIconClass = store.userScreen ? "icons" : iconClass;
 
     return (
         <div id="mainContainer">
@@ -128,7 +142,7 @@ const MainScreen = () => {
 
             <div id="iconsBanner">
                 <div id="listControlIcons">
-                    <IconButton>
+                    {/* <IconButton>
                         <HomeIcon fontSize="large"/>
                     </IconButton>
                     <IconButton>
@@ -136,6 +150,16 @@ const MainScreen = () => {
                     </IconButton>
                     <IconButton>
                         <PersonIcon  sx={{ml: 1}} fontSize="large"/>
+                    </IconButton> */}
+
+                    <IconButton onClick={handleSelectHome}>
+                        <HomeIcon className={homeIconClass} fontSize="large"/>
+                    </IconButton>
+                    <IconButton onClick={handleSelectCommunity}>
+                        <GroupsIcon className={communityIconClass}  sx={{ml: 1}} fontSize="large"/>
+                    </IconButton>
+                    <IconButton onClick={handleSelectUser}>
+                        <PersonIcon className={userIconClass}  sx={{ml: 1}} fontSize="large"/>
                     </IconButton>
                 </div>
                 

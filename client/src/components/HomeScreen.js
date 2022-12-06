@@ -23,7 +23,7 @@ const HomeScreen = () => {
     //     store.createNewList();
     // }
     let listCard = "";
-    if (store) {
+    if (store && store.homeScreen) {
         listCard = 
             <List sx={{width: '60%' }}>
             {

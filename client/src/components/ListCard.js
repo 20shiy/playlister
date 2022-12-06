@@ -13,6 +13,7 @@ import ExpandMore from '@mui/icons-material/ExpandMore'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import {ThumbUpOutlined, ThumbDownOutlined, DeleteOutlined} from '@mui/icons-material'
 import WorkspaceScreen from './WorkspaceScreen'
+import Button from '@mui/material/Button'
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -30,10 +31,10 @@ function ListCard(props) {
 
 
     function handleLoadList(event, id) {
-        // if(expanded == id) {
-        //     return setExpanded(null);
-        // }
-        // setExpanded(id);
+        if(event.detail == 2) {
+            handleToggleEdit(event);
+            return;
+        }
         console.log("handleLoadList for " + id);
         if (!event.target.disabled) {
             let _id = event.target.id;
@@ -78,6 +79,19 @@ function ListCard(props) {
         setText(event.target.value);
     }
 
+    function handleUndo() {
+        store.undo();
+    }
+    function handleRedo() {
+        store.redo();
+    }
+
+    function handleDuplicateList(event, id) {
+        event.stopPropagation();
+        store.duplicateList(id);
+        // setExpanded(!expanded);
+    }
+
     let selectClass = "unselected-list-card";
     if (selected) {
         selectClass = "selected-list-card";
@@ -115,6 +129,7 @@ function ListCard(props) {
             <Accordion 
                 className="list-card"
                 style={{borderRadius: "25px"}}
+                
                 >
                 <AccordionSummary
                     id={idNamePair._id}
@@ -130,22 +145,51 @@ function ListCard(props) {
                     aria-controls="panel1a-content"
                 >
                     <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
-                    <Box sx={{ p: 1 }}>
+                    {/* <Box sx={{ p: 1 }}>
                         <IconButton onClick={handleToggleEdit} aria-label='edit'>
                             <EditIcon style={{fontSize:'48pt'}} />
                         </IconButton>
-                    </Box>
-                    <Box sx={{ p: 1 }}>
+                    </Box> */}
+                    {/* <Box sx={{ p: 1 }}>
                         <IconButton onClick={(event) => {
                                 handleDeleteList(event, idNamePair._id)
                             }} aria-label='delete'>
                             <DeleteIcon style={{fontSize:'48pt'}} />
                         </IconButton>
-                    </Box>
+                    </Box> */}
                 </AccordionSummary>
                 <AccordionDetails>
                     <WorkspaceScreen />
-                    
+                    <Stack direction="row" justifyContent="space-between">
+                        <Stack direction="row" spacing={0}>
+                            <Button variant="contained"
+                                disabled={!store.canUndo()}
+                                id='undo-button'
+                                onClick={handleUndo}>
+                                    Undo
+                            </Button>
+                            <Button variant="contained"
+                                disabled={!store.canRedo()}
+                                id='redo-button'
+                                onClick={handleRedo}>
+                                    Redo
+                            </Button>
+                        </Stack>
+                        <Stack direction="row" spacing={0}>
+                            <Button variant="contained">Publish</Button>
+                            <Button variant="contained" 
+                                onClick={(event) => {
+                                    handleDeleteList(event, idNamePair._id)
+                                }} aria-label='delete'>
+                                Delete
+                            </Button>
+                            <Button variant="contained"
+                                onClick={(event) => 
+                                    {handleDuplicateList(event, idNamePair._id)}}>
+                                Duplicate
+                            </Button>
+                        </Stack>
+                    </Stack>
                 </AccordionDetails>
             </Accordion>
             

@@ -32,7 +32,8 @@ export const GlobalStoreActionType = {
     EDIT_SONG: "EDIT_SONG",
     REMOVE_SONG: "REMOVE_SONG",
     HIDE_MODALS: "HIDE_MODALS",
-    LOAD_CURRENT_SONG: "LOAD_CURRENT_SONG"
+    LOAD_CURRENT_SONG: "LOAD_CURRENT_SONG",
+    TRACK_SCREEN_SELECTED: "TRACK_SCREEN_SELECTED"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -61,6 +62,9 @@ function GlobalStoreContextProvider(props) {
         listIdMarkedForDeletion: null,
         listMarkedForDeletion: null,
         currentSongPlaying: 0,
+        homeScreen: true,
+        communityScreen: false,
+        userScreen: false
     });
     const history = useHistory();
 
@@ -88,6 +92,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -103,6 +110,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 })
             }
             // CREATE A NEW LIST
@@ -118,6 +128,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -133,6 +146,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -148,6 +164,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: payload.id,
                     listMarkedForDeletion: payload.playlist,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             // UPDATE A LIST
@@ -163,6 +182,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             // START EDITING A LIST NAME
@@ -178,6 +200,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             // 
@@ -193,6 +218,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -207,6 +235,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -221,6 +252,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
                 });
             }
             case GlobalStoreActionType.LOAD_CURRENT_SONG: {
@@ -235,6 +269,26 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: payload,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen
+                });
+            }
+            case GlobalStoreActionType.TRACK_SCREEN_SELECTED: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    currentSongPlaying: payload,
+                    homeScreen: payload.homeScreen,
+                    communityScreen: payload.communityScreen,
+                    userScreen: payload.userScreen
                 });
             }
             default:
@@ -327,6 +381,42 @@ function GlobalStoreContextProvider(props) {
         else {
             console.log("API FAILED TO CREATE A NEW LIST");
         }
+    }
+
+    store.duplicateList = function(id) {
+        // console.log(id);
+        async function getListToDuplicate(id) {
+            let response = await api.getPlaylistById(id);
+            if(response.data.success) {
+                let playlist = response.data.playlist;
+                console.log(playlist);
+                let newName = "Copy of " + playlist.name;
+                let newSongs = playlist.songs;
+                let email = auth.user.email;
+                // let userName = auth.user.userName;
+                // console.log(newName);
+
+                // const res = await api.createPlaylist(newName, newSongs, email, userName, false);
+                const res = await api.createPlaylist(newName, newSongs, email);
+                if (res.status === 201) {
+                    tps.clearAllTransactions();
+                    let newList = response.data.playlist;
+                    storeReducer({
+                        type: GlobalStoreActionType.CREATE_NEW_LIST,
+                        payload: newList
+                    }
+                );
+        
+                    store.loadIdNamePairs();
+                }
+                else {
+                    console.log("API FAILED TO CREATE A NEW LIST");
+                }
+
+            }
+        }
+        getListToDuplicate(id);
+
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
@@ -568,6 +658,40 @@ function GlobalStoreContextProvider(props) {
     }
     store.canClose = function() {
         return (store.currentList !== null);
+    }
+
+    store.homeScreenSelected = function() {
+        storeReducer({
+            type: GlobalStoreActionType.TRACK_SCREEN_SELECTED,
+            payload: {
+                homeScreen: true,
+                communityScreen: false,
+                userScreen: false
+            }
+        })
+    }
+
+    store.communityScreenSelected = function() {
+        storeReducer({
+            type: GlobalStoreActionType.TRACK_SCREEN_SELECTED,
+            payload: {
+                homeScreen: false,
+                communityScreen: true,
+                userScreen: false
+            }
+        })
+    }
+
+    store.userScreenSelected = function() {
+        storeReducer({
+            type: GlobalStoreActionType.TRACK_SCREEN_SELECTED,
+            payload: {
+                homeScreen: false,
+                communityScreen: false,
+                userScreen: true
+            }
+        })
+
     }
 
     store.incSong = function() {

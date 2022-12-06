@@ -525,6 +525,16 @@ input {
   padding-top: 15px;
 }
 
+.icons-disabled {
+  color: grey;
+  cursor: pointer;
+  /* cursor: not-allowed; */
+}
+
+.icons:hover {
+  cursor: pointer;
+}
+
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {
