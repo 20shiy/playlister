@@ -17,10 +17,11 @@
 }
 
 body {
-  background-image: url('https://thumbs.dreamstime.com/b/music-notes-symbols-seamless-pattern-design-fully-editable-fill-background-color-music-notes-symbols-seamless-pattern-118273669.jpg')
+  /* background-image: url('https://thumbs.dreamstime.com/b/music-notes-symbols-seamless-pattern-design-fully-editable-fill-background-color-music-notes-symbols-seamless-pattern-118273669.jpg') */
+  background-color: #fdffc4;
 }
 
-#root {
+/* #root {
   background-color: var(--swatch-primary);
   font-family: "Lexend Exa";
   position: absolute;
@@ -28,7 +29,7 @@ body {
   left: 10%;
   height: 90%;
   top: 5%;
-}
+} */
 
 #app-root {
   position: absolute;
@@ -151,7 +152,7 @@ body {
 #list-selector-list {
   position: absolute;
   left: 0%;
-  top: 10%;
+  top: 150px;
   width: 100%;
   height: 90%;
   display: flex;
@@ -367,6 +368,104 @@ input {
   text-align: center;
 }
 
+#splashContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background-image: linear-gradient(to bottom, white, #8a6ecc);
+  height: 100vh;
+  width: 100%;
+}
+
+.topBanner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-family: monospace;
+  font-size: 10px;
+}
+
+#splashMain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4%;
+}
+
+.splashButton {
+  width: 200px;
+}
+
+#mainContainer {
+  width: 100%;
+  background-color: #c4c4c4;
+  height: 140vh;
+}
+
+#mainScreenBanner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #e0e0e0;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 6px 15px 0 rgba(0, 0, 0, 0.19);
+}
+
+.icons-disabled {
+  color: grey;
+  cursor: pointer;
+}
+
+.icons:hover {
+  cursor: pointer;
+}
+
+#iconsBanner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.searchBar:hover {
+  cursor: text
+}
+
+#sortSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#leftAndRightComponent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#bottomToolBar {
+  margin-top: 10px;
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#listCardsComponent {
+  width: 60%;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+}
+
+#rightComponent {
+  width: 40%;
+  height: 80vh;
+}
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {

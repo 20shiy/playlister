@@ -19,13 +19,13 @@ const HomeScreen = () => {
         store.loadIdNamePairs();
     }, []);
 
-    function handleCreateNewList() {
-        store.createNewList();
-    }
+    // function handleCreateNewList() {
+    //     store.createNewList();
+    // }
     let listCard = "";
     if (store) {
         listCard = 
-            <List sx={{width: '100%', bgcolor: 'background.paper', mb:"20px" }}>
+            <List sx={{width: '60%' }}>
             {
                 store.idNamePairs.map((pair) => (
                     <ListCard
@@ -36,30 +36,24 @@ const HomeScreen = () => {
                 ))
                 
             }
-            <Fab sx={{transform:"translate(1150%, 10%)"}}
-                color="primary" 
-                aria-label="add"
-                id="add-list-button"
-                onClick={handleCreateNewList}
-            >
-                <AddIcon />
-            </Fab>
+            
             </List>;
     }
     return (
-        <div id="playlist-selector">
-            <div id="list-selector-heading">
+        // <div id="playlist-selector">
+        <div id="listCardsComponent">
+            {/* <div id="list-selector-heading">
             <Fab sx={{transform:"translate(-20%, 0%)"}}
                 color="primary" 
                 aria-label="add"
                 id="add-list-button"
-                onClick={handleCreateNewList}
+                // onClick={handleCreateNewList}
             >
                 <AddIcon />
             </Fab>
                 Your Playlists
-            </div>
-            <Box sx={{bgcolor:"background.paper"}} id="list-selector-list">
+            </div> */}
+            <Box id="list-selector-list">
                 {
                     listCard
                 }

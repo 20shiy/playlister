@@ -89,9 +89,9 @@ function AuthContextProvider(props) {
                     }
                 })
                 history.push("/login");
-                console.log("NOW WE LOGIN");
-                auth.loginUser(email, password);
-                console.log("LOGGED IN");
+                // console.log("NOW WE LOGIN");
+                // auth.loginUser(email, password);
+                // console.log("LOGGED IN");
             }
         } catch(error){
             authReducer({
@@ -117,7 +117,7 @@ function AuthContextProvider(props) {
                         errorMessage: null
                     }
                 })
-                history.push("/");
+                history.push("/main");
             }
         } catch(error){
             authReducer({
