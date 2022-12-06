@@ -6,6 +6,13 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
+import { Accordion,Typography, Card, CardHeader,Stack, Link} from '@mui/material';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMore from '@mui/icons-material/ExpandMore'
+import ExpandLess from '@mui/icons-material/ExpandLess'
+import {ThumbUpOutlined, ThumbDownOutlined, DeleteOutlined} from '@mui/icons-material'
+import WorkspaceScreen from './WorkspaceScreen'
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -19,8 +26,14 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair, selected } = props;
+    // const [expanded, setExpanded] = useState(null);
+
 
     function handleLoadList(event, id) {
+        // if(expanded == id) {
+        //     return setExpanded(null);
+        // }
+        // setExpanded(id);
         console.log("handleLoadList for " + id);
         if (!event.target.disabled) {
             let _id = event.target.id;
@@ -28,7 +41,7 @@ function ListCard(props) {
                 _id = ("" + _id).substring("list-card-text-".length);
 
             console.log("load " + event.target.id);
-
+            // setExpanded(!expanded);
             // CHANGE THE CURRENT LIST
             store.setCurrentList(id);
         }
@@ -74,30 +87,69 @@ function ListCard(props) {
         cardStatus = true;
     }
     let cardElement =
-        <ListItem
-            id={idNamePair._id}
-            key={idNamePair._id}
-            sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
-            style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
-            button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
-            }}
-        >
-            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
-            <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{fontSize:'48pt'}} />
-                </IconButton>
-            </Box>
-            <Box sx={{ p: 1 }}>
-                <IconButton onClick={(event) => {
-                        handleDeleteList(event, idNamePair._id)
-                    }} aria-label='delete'>
-                    <DeleteIcon style={{fontSize:'48pt'}} />
-                </IconButton>
-            </Box>
-        </ListItem>
+        // <ListItem
+        //     id={idNamePair._id}
+        //     key={idNamePair._id}
+        //     className="list-card"
+        //     sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
+        //     style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
+        //     button
+        //     onClick={(event) => {
+        //         handleLoadList(event, idNamePair._id)
+        //     }}
+        // >
+        //     <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+        //     <Box sx={{ p: 1 }}>
+        //         <IconButton onClick={handleToggleEdit} aria-label='edit'>
+        //             <EditIcon style={{fontSize:'48pt'}} />
+        //         </IconButton>
+        //     </Box>
+        //     <Box sx={{ p: 1 }}>
+        //         <IconButton onClick={(event) => {
+        //                 handleDeleteList(event, idNamePair._id)
+        //             }} aria-label='delete'>
+        //             <DeleteIcon style={{fontSize:'48pt'}} />
+        //         </IconButton>
+        //     </Box>
+            
+            <Accordion 
+                className="list-card"
+                style={{borderRadius: "25px"}}
+                >
+                <AccordionSummary
+                    id={idNamePair._id}
+                    key={idNamePair._id}
+                    sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', p: 1 }}
+                    style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
+                    
+                    // button
+                    onClick={(event) => {
+                        handleLoadList(event, idNamePair._id)
+                    }}
+                    expandIcon={<ExpandMore />}
+                    aria-controls="panel1a-content"
+                >
+                    <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+                    <Box sx={{ p: 1 }}>
+                        <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                            <EditIcon style={{fontSize:'48pt'}} />
+                        </IconButton>
+                    </Box>
+                    <Box sx={{ p: 1 }}>
+                        <IconButton onClick={(event) => {
+                                handleDeleteList(event, idNamePair._id)
+                            }} aria-label='delete'>
+                            <DeleteIcon style={{fontSize:'48pt'}} />
+                        </IconButton>
+                    </Box>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <WorkspaceScreen />
+                    
+                </AccordionDetails>
+            </Accordion>
+            
+        // </ListItem>
 
     if (editActive) {
         cardElement =

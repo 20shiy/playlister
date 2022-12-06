@@ -160,6 +160,16 @@ body {
   overflow: scroll;
 }
 
+#songListsComponent {
+  width: 100%;
+  max-height: 200px;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  /* background-color: #302a6e; */
+  border-radius: 10px;
+}
+
 
 .list-card,
 .selected-list-card,
@@ -466,6 +476,7 @@ input {
   width: 40%;
   height: 80vh;
 }
+
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {

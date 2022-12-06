@@ -120,7 +120,7 @@ function GlobalStoreContextProvider(props) {
                 return setStore({
                     currentModal : CurrentModal.NONE,
                     idNamePairs: payload,
-                    currentList: null,
+                    currentList: store.currentList,
                     currentSongIndex: -1,
                     currentSong: null,
                     newListCounter: store.newListCounter,
@@ -407,7 +407,9 @@ function GlobalStoreContextProvider(props) {
                     });
                     // history.push("/playlist/" + playlist._id);
                     // history.push('/main/')
+                    store.currentList = playlist;
                     store.loadIdNamePairs();
+                    console.log(store.currentList);
                 }
             }
         }
@@ -415,6 +417,7 @@ function GlobalStoreContextProvider(props) {
     }
 
     store.getPlaylistSize = function() {
+        console.log(store.currentList);
         return store.currentList.songs.length;
     }
     store.addNewSong = function() {

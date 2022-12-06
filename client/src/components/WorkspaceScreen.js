@@ -6,6 +6,7 @@ import MUIRemoveSongModal from './MUIRemoveSongModal'
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import { GlobalStoreContext } from '../store/index.js'
+import AddIcon from '@mui/icons-material/Add';
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -15,6 +16,10 @@ import { GlobalStoreContext } from '../store/index.js'
 function WorkspaceScreen() {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
+
+    function handleAddNewSong() {
+        store.addNewSong();
+    }
     
     let modalJSX = "";
     if (store.isEditSongModalOpen()) {
@@ -23,11 +28,13 @@ function WorkspaceScreen() {
     else if (store.isRemoveSongModalOpen()) {
         modalJSX = <MUIRemoveSongModal />;
     }
-    return (
-        <Box id="list-selector-list">
+
+    let songs = "";
+    if(store.currentList) {
+        songs = 
         <List 
             id="playlist-cards" 
-            sx={{overflow: 'scroll', height: '87%', width: '100%', bgcolor: '#8000F00F'}}
+            sx={{overflow: 'scroll', height: '200px', width: '60%', bgcolor: '#8000F00F'}}
         >
             {
                 store.currentList.songs.map((song, index) => (
@@ -39,9 +46,34 @@ function WorkspaceScreen() {
                     />
                 ))  
             }
-         </List>            
+        </List>
+    }
+    return (
+        <div id="songListsComponent">
+        {/* <List 
+            id="playlist-cards" 
+            sx={{overflow: 'scroll', height: '200px', width: '60%', bgcolor: '#8000F00F'}}
+        >
+            {
+                store.currentList.songs.map((song, index) => (
+                    <SongCard
+                        id={'playlist-song-' + (index)}
+                        key={'playlist-song-' + (index)}
+                        index={index}
+                        song={song}
+                    />
+                ))  
+            }
+            <div className="list-card unselected-list-card" onClick={handleAddNewSong}>
+                <AddIcon style={{marginLeft: "50%"}}/>
+            </div>
+         </List>             */}
+         {songs}
+         <div className="list-card unselected-list-card" onClick={handleAddNewSong}>
+            <AddIcon style={{marginLeft: "50%"}}/>
+        </div>
          { modalJSX }
-         </Box>
+         </div>
     )
 }
 
