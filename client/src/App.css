@@ -571,6 +571,26 @@ input {
   flex-direction: column;
 }
 
+.modal-dialog {
+  position: relative;
+  max-width: 800px;
+  max-height: 80vh;
+  background: #d5d3f4;
+  overflow: auto;
+  cursor: default;
+  border-width: 5px;
+  border-radius: 10px;
+  border-style: groove;
+}
+
+.modal-dialog > * {
+  padding: 1rem;
+}
+
+.dialog-header {
+  font-size: 24pt;
+}
+
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {

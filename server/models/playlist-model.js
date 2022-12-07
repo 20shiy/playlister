@@ -21,9 +21,9 @@ const playlistSchema = new Schema(
             required: true
         },
         views: {type: Number},
-        likes: {type: Number},
-        dislikes: {type: Number},
-        datePublished: {type: Date},
+        likes: {type: [String]},
+        dislikes: {type: [String]},
+        datePublished: {type: String},
         comments: {type: [{
             owner: String,
             content: String

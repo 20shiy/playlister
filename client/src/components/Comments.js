@@ -26,7 +26,7 @@ const  Comments= () => {
                 {
                     store.currentList.comments.map((comment) => (
                         <div className="cardClass">
-                            <b>{comment.owner}</b>
+                            <b style={{color: "purple"}}>{comment.owner}</b>
                             <p>{comment.content}</p>
                         </div>
                     ))

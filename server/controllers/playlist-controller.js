@@ -368,6 +368,9 @@ updateComments = async(req, res) => {
         }
 
     playlist.comments = body.playlist.comments;
+    playlist.likes = body.playlist.likes;
+    playlist.dislikes = body.playlist.dislikes;
+    playlist.views = body.playlist.views;
 
     playlist
         .save()

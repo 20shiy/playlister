@@ -7,18 +7,31 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 
-const style1 = {
+// const style1 = {
+//     position: 'absolute',
+//     top: '50%',
+//     left: '50%',
+//     transform: 'translate(-50%, -50%)',
+//     width: 345,
+//     height: 250,
+//     backgroundSize: "contain",
+//     // backgroundImage: `url(https://i.insider.com/602ee9ced3ad27001837f2ac?})`,
+//     backgroundColor: '#302a6e'
+//     border: '3px solid #000',
+//     padding: '20px',
+//     boxShadow: 24,
+// };
+
+const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 345,
-    height: 250,
-    backgroundSize: "contain",
-    backgroundImage: `url(https://i.insider.com/602ee9ced3ad27001837f2ac?})`,
-    border: '3px solid #000',
-    padding: '20px',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
     boxShadow: 24,
+    p: 4,
 };
 
 export default function MUIDeleteModal() {
@@ -40,7 +53,7 @@ export default function MUIDeleteModal() {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         >
-        <Box sx={style1}>
+        {/* <Box sx={style1}>
             <Typography sx={{fontWeight: 'bold'}} id="modal-modal-title" variant="h4" component="h2">
                 Delete Playlist
             </Typography>
@@ -52,6 +65,25 @@ export default function MUIDeleteModal() {
             </Box>
             <Button sx={{opacity: 0.7, color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p:"5px", mt:"60px", mr:"95px"}} variant="outlined" onClick={handleDeleteList}> Confirm </Button>
             <Button sx={{opacity: 0.50, color: "#8932CC", backgroundColor: "#CBC3E3", fontSize: 13, fontWeight: 'bold', border: 2, p:"5px", mt:"60px", ml:"102px"}} variant="outlined" onClick={handleCloseModal}> Cancel </Button>
+        </Box> */}
+        <Box sx={style}>
+            <div className="modal-dialog">
+                <header className="dialog-header" style={{backgroundColor:"#302a6e", color: "white"}}>
+                    Delete the {name} playlist?
+                </header>
+                <div id="confirm-cancel-container" style={{textAlign: "center"}}>
+                    <button
+                        id="dialog-yes-button"
+                        className="modal-button"
+                        onClick={handleDeleteList}
+                    >Confirm</button>
+                    <button
+                        id="dialog-no-button"
+                        className="modal-button"
+                        onClick={handleCloseModal}
+                    >Cancel</button>
+                </div>
+            </div>
         </Box>
     </Modal>
     );

@@ -546,6 +546,7 @@ function GlobalStoreContextProvider(props) {
         // GET THE LIST
         let list = store.currentList;
         list.published = true;
+        list.datePublished = new Date().toDateString();
         store.updateCurrentList();
     }
 
@@ -557,6 +558,81 @@ function GlobalStoreContextProvider(props) {
                 if (response.data.success) {
                     let pairsArray = response.data.idNamePairs;
                     console.log(pairsArray);
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                        payload: pairsArray
+                    });
+                }
+            } catch(error) {
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: []
+                })
+            }
+        }
+        asyncLoadIdNamePairs();
+    }
+
+    store.sortByName = function() {
+        async function asyncLoadIdNamePairs() {
+            try {
+                const response = await api.getPlaylistPairs();
+                if (response.data.success) {
+                    let pairsArray = response.data.idNamePairs;
+                    pairsArray.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                    // console.log(pairsArray);
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                        payload: pairsArray
+                    });
+                }
+            } catch(error) {
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: []
+                })
+            }
+        }
+        asyncLoadIdNamePairs();
+    }
+
+    store.sortByCreate = function() {
+        async function asyncLoadIdNamePairs() {
+            try {
+                const response = await api.getPlaylistPairs();
+                if (response.data.success) {
+                    let pairsArray = response.data.idNamePairs;
+                    // console.log(pairsArray);
+                    console.log(typeof pairsArray[0].createdAt);
+                    console.log(new Date("" + pairsArray[0].createdAt))
+                    
+                    pairsArray.sort((a, b) => (new Date(a.createdAt).getTime() > new Date(a.createdAt).getTime()) ? 1 : -1)
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                        payload: pairsArray
+                    });
+                }
+            } catch(error) {
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                    payload: []
+                })
+            }
+        }
+        asyncLoadIdNamePairs();
+    }
+
+    store.sortByEdit = function() {
+        async function asyncLoadIdNamePairs() {
+            try {
+                const response = await api.getPlaylistPairs();
+                if (response.data.success) {
+                    let pairsArray = response.data.idNamePairs;
+                    // // console.log(pairsArray);
+                    // console.log(typeof pairsArray[0].createdAt);
+                    // console.log(new Date("" + pairsArray[0].createdAt))
+                    
+                    pairsArray.sort((a, b) => (new Date(a.updatedAt).getTime() > new Date(b.updatedAt).getTime()) ? -1 : 1)
                     storeReducer({
                         type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
                         payload: pairsArray
@@ -850,6 +926,9 @@ function GlobalStoreContextProvider(props) {
     store.updateCommentById = function() {
         async function asyncUpdateComment() {
             const response = await api.updateCommentById(store.currentList._id, store.currentList);
+            if(response.data.success) {
+                store.setCurrentListForPublished(store.currentList._id);
+            }
         }
         asyncUpdateComment();
     }

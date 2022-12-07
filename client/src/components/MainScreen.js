@@ -22,8 +22,10 @@ const MainScreen = () => {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [sortAnchorEl, setSortAnchorEl] = useState(null);
     const [text, setText] = useState("");
     const isMenuOpen = Boolean(anchorEl);
+    const isSortOpen = Boolean(sortAnchorEl);
 
     function handleCreateNewList() {
     store.createNewList();
@@ -33,9 +35,32 @@ const MainScreen = () => {
         setAnchorEl(event.currentTarget);
     };
 
+    const handleSortMenuOpen = (event) => {
+        setSortAnchorEl(event.currentTarget);
+    }
+
     const handleMenuClose = () => {
         setAnchorEl(null);
     };
+
+    const handleSortMenuClose = () => {
+        setSortAnchorEl(null);
+    }
+
+    const handleSortByCreate = () => {
+        store.sortByCreate();
+        setSortAnchorEl(null);
+    }
+
+    const handleSortByEdit = () => {
+        store.sortByEdit();
+        setSortAnchorEl(null);
+    }
+
+    const handleSortByName = () => {
+        store.sortByName();
+        setSortAnchorEl(null);
+    }
 
     const handleLogout = () => {
         handleMenuClose();
@@ -82,6 +107,7 @@ const MainScreen = () => {
     // }
 
     const menuId = 'primary-search-account-menu';
+    const sortIconId = "sort-menu"
     const loggedOutMenu = (
         <Menu
             anchorEl={anchorEl}
@@ -119,7 +145,28 @@ const MainScreen = () => {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
-        </Menu>        
+        </Menu>
+        
+    const sortMenu = 
+        <Menu
+            anchorEl={sortAnchorEl}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            id={sortIconId}
+            keepMounted
+            transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            open={isSortOpen}
+            onClose={handleSortMenuClose}
+        >
+            <MenuItem disabled={!store.homeScreen} onClick={handleSortByCreate}>By Creation Date (Old-New)</MenuItem>
+            <MenuItem disabled={!store.homeScreen} onClick={handleSortByEdit}>By Last Edit Date (New-Old)</MenuItem>
+            <MenuItem disabled={!store.homeScreen} onClick={handleSortByName}>By Name (A-Z)</MenuItem>
+        </Menu>
 
     // let editToolbar = "";
     let menu = loggedOutMenu;
@@ -201,7 +248,17 @@ const MainScreen = () => {
                 </Paper>
                 <div id="sortSection">
                     <b>SORT BY</b>
-                    <SortIcon className="icons" fontSize="large" sx={{ml: 1}}/>
+                    <IconButton
+                        // className="icons"
+                        // fontSize="medium" 
+                        aria-controls={sortIconId} 
+                        aria-label="sort"
+                        aria-haspopup="true"
+                        aria-expanded={isSortOpen ? 'true' : undefined}
+                        onClick={handleSortMenuOpen}
+                        >
+                        <SortIcon className="icons" fontSize="large" sx={{ml: 1}}/>
+                    </IconButton>
                 </div>
             </div>
 
@@ -223,6 +280,7 @@ const MainScreen = () => {
             </div>
 
             {menu}
+            {sortMenu}
             {/* <MUIDeleteModal />
             { modalJSX } */}
             

@@ -12,9 +12,11 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMore from '@mui/icons-material/ExpandMore'
 import ExpandLess from '@mui/icons-material/ExpandLess'
-import {ThumbUpOutlined, ThumbDownOutlined, DeleteOutlined} from '@mui/icons-material'
+// import {ThumbUpOutlined, ThumbDownOutlined, DeleteOutlined} from '@mui/icons-material'
 import WorkspaceScreen from './WorkspaceScreen'
 import Button from '@mui/material/Button'
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
+import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -29,6 +31,9 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair, selected } = props;
+    const [likes, setLikes] = useState(idNamePair.likes.length);
+    const [dislikes, setDislikes] = useState(idNamePair.dislikes.length);
+    const [views, setViews] = useState(0);
     // const [expanded, setExpanded] = useState(null);
 
 
@@ -52,8 +57,13 @@ function ListCard(props) {
             } else {
                 store.setCurrentList(id);
             }
+            // store.currentList.views += 1;
+            // store.updateCommentById();
             
         }
+        // idNamePair.views += 1;
+        // store.updateCommentById();
+        // addViews();
     }
 
     function handleToggleEdit(event) {
@@ -105,6 +115,31 @@ function ListCard(props) {
         // store.loadPublishedLists();
     }
 
+    function addLikes(event) {
+        event.stopPropagation();
+        if(!idNamePair.likes.includes(auth.user.userName)) {
+            store.currentList.likes.push(auth.user.userName);
+            store.updateCommentById();
+            setLikes(idNamePair.likes.length + 1);
+        }
+        
+    }
+
+    function addDislikes(event) {
+        event.stopPropagation();
+        if(!idNamePair.likes.includes(auth.user.userName)) {
+            store.currentList.dislikes.push(auth.user.userName);
+            store.updateCommentById();
+            setDislikes(idNamePair.dislikes.length + 1);
+        }
+        
+    }
+
+    function addViews(event) {
+        event.stopPropagation();
+        setViews(views + 1);
+    }
+
     let selectClass = "unselected-list-card";
     if (selected) {
         selectClass = "selected-list-card";
@@ -114,9 +149,110 @@ function ListCard(props) {
         cardStatus = true;
     }
 
+    let iconColorUp = "black";
+    let iconColorDown = "black";
+    if(!auth.user) {
+        iconColorUp = "grey";
+        iconColorDown = "grey";
+    }
+    if(auth.user) {
+        if(idNamePair.likes.includes(auth.user.userName)) {
+            iconColorUp = "red";
+        }
+
+        if(idNamePair.dislikes.includes(auth.user.userName)) {
+            iconColorDown = "red";
+        }
+    }
+    
+
+    
+    let btnStack = 
+        <Stack direction="row" justifyContent="space-between">
+            <Stack direction="row" spacing={0}>
+                <Button variant="contained"
+                    disabled={!store.canUndo()}
+                    id='undo-button'
+                    onClick={handleUndo}>
+                        Undo
+                </Button>
+                <Button variant="contained"
+                    disabled={!store.canRedo()}
+                    id='redo-button'
+                    onClick={handleRedo}>
+                        Redo
+                </Button>
+            </Stack>
+            <Stack direction="row" spacing={0}>
+                <Button variant="contained"
+                    onClick={(event) => {handlePublish(event, idNamePair._id)}}>
+                        Publish
+                </Button>
+                <Button variant="contained" 
+                    onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                    Delete
+                </Button>
+                <Button variant="contained"
+                    onClick={(event) => 
+                        {handleDuplicateList(event, idNamePair._id)}}>
+                    Duplicate
+                </Button>
+            </Stack>
+        </Stack>
     let backgroundColor = "white";
+    let publishedDate = "";
+    let likesAndDislikes = "";
+    let listens = "";
     if(idNamePair.published) {
+        let dateString = idNamePair.datePublished;
+        dateString = dateString.substring(4, 15)
         backgroundColor = "#d5d3f4";
+        publishedDate = 
+            <p style={{fontSize: '8pt', display:"flex", flexDirection:"row", alignItems:"center"}}>Published: &nbsp; <p style={{fontSize: '8pt', color: "green"}}>{dateString}</p></p>
+
+        likesAndDislikes = 
+        <div>
+            <IconButton disabled={!auth.user} style={{color: `${iconColorUp}`}} onClick={addLikes}>
+                <ThumbUpOutlinedIcon />
+                <Typography>{idNamePair.likes ? likes : ""}</Typography>
+            </IconButton>
+            <IconButton disabled={!auth.user} style={{color: `${iconColorDown}`}} onClick={addDislikes}>
+                <ThumbDownOutlinedIcon />
+                <Typography>{idNamePair.dislikes ? dislikes : ""}</Typography>
+            </IconButton>
+        </div>
+
+        listens = 
+            <p style={{fontSize: '8pt', display:"flex", flexDirection:"row", alignItems:"center"}}>Listens: &nbsp; <p style={{fontSize: '8pt', color: "red"}}>{views}</p></p>
+
+        if(store.homeScreen) {
+            btnStack = 
+            <Stack direction="row" spacing={0} justifyContent="flex-end">
+                <Button variant="contained" 
+                    onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                    Delete
+                </Button>
+                <Button variant="contained"
+                    onClick={(event) => 
+                        {handleDuplicateList(event, idNamePair._id)}}>
+                    Duplicate
+                </Button>
+            </Stack>
+        } else {
+            btnStack = 
+            <Stack direction="row" spacing={0} justifyContent="flex-end">
+                <Button variant="contained"
+                    onClick={(event) => 
+                        {handleDuplicateList(event, idNamePair._id)}}>
+                    Duplicate
+                </Button>
+            </Stack>
+        }
+        
     }
     
     if(store.currentList && idNamePair._id == store.currentList._id) {
@@ -163,15 +299,24 @@ function ListCard(props) {
                     
                     // button
                     onClick={(event) => {
-                        handleLoadList(event, idNamePair._id)
+                        handleLoadList(event, idNamePair._id);
+                        addViews(event);
                     }}
                     expandIcon={<ExpandMore />}
                     aria-controls="panel1a-content"
                 >   
-                    <div id="listTitle">
-                        <b>{idNamePair.name}</b>
-                        <p style={{fontSize: '8pt'}}>By: &nbsp; <u style={{color: "blue"}}>{idNamePair.userName}</u></p>
+                    <div style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+                        <div className="listTitle">
+                            <b>{idNamePair.name}</b>
+                            <p style={{fontSize: '8pt'}}>By: &nbsp; <u style={{color: "blue"}}>{idNamePair.userName}</u></p>
+                            {publishedDate}
+                        </div>
+                        <div className="listTitle">    
+                            {likesAndDislikes}
+                            {listens}
+                        </div>
                     </div>
+                    
 
                     {/* <Box sx={{ p: 1 }}>
                         <IconButton onClick={handleToggleEdit} aria-label='edit'>
@@ -188,7 +333,7 @@ function ListCard(props) {
                 </AccordionSummary>
                 <AccordionDetails>
                     <WorkspaceScreen songsArray={idNamePair.songs} isPublished={idNamePair.published}/>
-                    <Stack direction="row" justifyContent="space-between">
+                    {/* <Stack direction="row" justifyContent="space-between">
                         <Stack direction="row" spacing={0}>
                             <Button variant="contained"
                                 disabled={!store.canUndo()}
@@ -220,7 +365,8 @@ function ListCard(props) {
                                 Duplicate
                             </Button>
                         </Stack>
-                    </Stack>
+                    </Stack> */}
+                    {btnStack}
                 </AccordionDetails>
             </Accordion>
             
