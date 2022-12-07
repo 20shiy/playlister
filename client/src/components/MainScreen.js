@@ -69,6 +69,11 @@ const MainScreen = () => {
             }
             console.log(store.listsSearch);
         }
+        if(store.userScreen) {
+            if(event.code === "Enter") {
+                store.loadUserSearched(event.target.value);
+            }
+        }
     }
 
     // function handleUpdateText(event) {

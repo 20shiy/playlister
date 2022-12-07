@@ -122,12 +122,12 @@ getPlaylistById = async (req, res) => {
 }
 searchPlaylists = async(req, res) => {
     let listname = req.params.listname;
-    console.log(listname + "============================");
+    // console.log(listname + "============================");
     await Playlist.find({name: {$regex: ""+listname, $options: "i"}}, (err, lists) => {
         if(err) {
             console.log(err);
-            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            return [];
+            // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            return res.status(200).json({success: true, listFoundByName: []});
         }
 
         async function checkPublished(lists) {
@@ -139,11 +139,44 @@ searchPlaylists = async(req, res) => {
                 }
             }
             console.log(finalLists);
-            console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+            // console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
             return res.status(200).json({success: true, listFoundByName: finalLists})
         }
         checkPublished(lists);
     }).catch(err => console.log("search list by name failed: " + err));
+}
+searchPlaylistsByUser = async(req, res) => {
+    let username = req.params.username;
+
+    await User.find({userName: {$regex: ""+username, $options: "i"}}, (err, users) => {
+        console.log(users);
+        console.log("-----------------------------------------------");
+        async function asyncFindLists(listOfUsers) {
+            let userListsFound = [];
+            for(let i=0; i<listOfUsers.length; i++) {
+                let user = listOfUsers[i];
+                console.log("!!!!!!!!!!!!!!!!!! looping through user " + user);
+                await Playlist.find({ownerEmail: user.email}, (err, playlists) => {
+                    if(err) {
+                        return res.status(400).json({success: false, error: err})
+                    }
+                    async function asyncCheckPublished(lists) {
+                        for(let j=0; j<lists.length; j++) {
+                            let list = lists[j];
+                            if(list.published) {
+                                userListsFound.push(list);
+                            }
+                        }
+                        return res.status(200).json({success: true, listFoundByUser: userListsFound});
+                    }
+                    asyncCheckPublished(playlists);
+                     
+                }).catch(err => console.log(err))
+            }
+           
+        }
+        asyncFindLists(users);
+    }).catch(err => console.log(err))
 }
 getPlaylistPairs = async (req, res) => {
     if(auth.verifyUser(req) === null){
@@ -281,5 +314,6 @@ module.exports = {
     getPlaylistPairs,
     getPlaylists,
     updatePlaylist,
-    searchPlaylists
+    searchPlaylists,
+    searchPlaylistsByUser
 }

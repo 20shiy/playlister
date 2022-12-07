@@ -34,7 +34,8 @@ export const GlobalStoreActionType = {
     HIDE_MODALS: "HIDE_MODALS",
     LOAD_CURRENT_SONG: "LOAD_CURRENT_SONG",
     TRACK_SCREEN_SELECTED: "TRACK_SCREEN_SELECTED",
-    LOAD_SEARCH_LISTS: "LOAD_SEARCH_LISTS"
+    LOAD_SEARCH_LISTS: "LOAD_SEARCH_LISTS",
+    LOAD_SEARCH_LISTS_USER: "LOAD_SEARCH_LISTS_USER"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -66,7 +67,8 @@ function GlobalStoreContextProvider(props) {
         homeScreen: true,
         communityScreen: false,
         userScreen: false,
-        listsSearch: []
+        listsSearch: [],
+        listSearchByUser: []
     });
     const history = useHistory();
 
@@ -97,7 +99,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -116,7 +119,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 })
             }
             // CREATE A NEW LIST
@@ -135,7 +139,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -154,7 +159,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -173,7 +179,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 });
             }
             // UPDATE A LIST
@@ -192,7 +199,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: store.listsSearch,
+                    listSearchByUser: store.listSearchByUser
                 });
             }
             // START EDITING A LIST NAME
@@ -211,7 +219,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 });
             }
             // 
@@ -230,7 +239,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -248,7 +258,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -266,7 +277,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: [],
+                    listSearchByUser: []
                 });
             }
             case GlobalStoreActionType.LOAD_CURRENT_SONG: {
@@ -284,7 +296,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: store.listsSearch,
+                    listSearchByUser: store.listSearchByUser
                 });
             }
             case GlobalStoreActionType.TRACK_SCREEN_SELECTED: {
@@ -302,7 +315,8 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: payload.homeScreen,
                     communityScreen: payload.communityScreen,
                     userScreen: payload.userScreen,
-                    listsSearch: store.listsSearch
+                    listsSearch: store.listsSearch,
+                    listSearchByUser: store.listSearchByUser
                 });
             }
             case GlobalStoreActionType.LOAD_SEARCH_LISTS: {
@@ -320,7 +334,27 @@ function GlobalStoreContextProvider(props) {
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
                     userScreen: store.userScreen,
-                    listsSearch: payload
+                    listsSearch: payload,
+                    listSearchByUser: []
+                });
+            }
+            case GlobalStoreActionType.LOAD_SEARCH_LISTS_USER: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen,
+                    listsSearch: [],
+                    listSearchByUser: payload
                 });
             }
             default:
@@ -484,22 +518,55 @@ function GlobalStoreContextProvider(props) {
 
     store.loadListsSearched = function(listname) {
         async function asyncLoadListsSearched(name) {
-            const response = await api.searchByPlaylistName(name);
-            if(response.data.success) {
-                console.log("success!+++++++++");
-                let searchedLists = response.data.listFoundByName;
-                console.log(searchedLists);
-                
+            try {
+                const response = await api.searchByPlaylistName(name);
+                if(response.data.success) {
+                    console.log("success!+++++++++");
+                    let searchedLists = response.data.listFoundByName;
+                    console.log(searchedLists);
+                    
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_SEARCH_LISTS,
+                        payload: searchedLists
+                    });
+                    
+                }
+            } catch (err) {
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_SEARCH_LISTS,
-                    payload: searchedLists
+                    payload: []
                 });
-                
             }
+             
         }
         asyncLoadListsSearched(listname);
         // console.log(store.listsSearch);
         
+    }
+
+    store.loadUserSearched = function(userName) {
+        async function asyncLoadUserSearched(name) {
+            try {
+                const response = await api.searchByUserName(name);
+                if(response.data.success) {
+                    console.log("success!^^^^^^^");
+                    let searchedLists = response.data.listFoundByUser;
+                    console.log(searchedLists);
+                    
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_SEARCH_LISTS_USER,
+                        payload: searchedLists
+                    });
+                    
+                }
+            } catch (err) {
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_SEARCH_LISTS_USER,
+                    payload: []
+                });
+            }
+        }
+        asyncLoadUserSearched(userName);
     }
 
     // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION

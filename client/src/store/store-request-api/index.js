@@ -32,6 +32,7 @@ export const createPlaylist = (newListName, newSongs, userEmail, userName, publi
         published: false
     })
 }
+export const searchByUserName = (username) => api.get(`/searchbyusername/${username}`)
 export const searchByPlaylistName = (listname) => api.get(`/searchplaylists/${listname}`)
 export const deletePlaylistById = (id) => api.delete(`/playlist/${id}`)
 export const getPlaylistById = (id) => api.get(`/playlist/${id}`)
@@ -49,7 +50,8 @@ const apis = {
     getPlaylistById,
     getPlaylistPairs,
     updatePlaylistById,
-    searchByPlaylistName
+    searchByPlaylistName,
+    searchByUserName
 }
 
 export default apis
