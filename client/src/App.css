@@ -549,6 +549,28 @@ input {
   border-color: black;
 }
 
+#commentsComponent {
+  width: 90%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  background-color: #d5d3f4;
+}
+
+.cardClass {
+  width: 92%;
+  margin-left: 10px;
+  font-size: 12pt;
+  border-radius: 10px;
+  background-color: #d3b242;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {
