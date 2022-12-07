@@ -1,6 +1,7 @@
 import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import SongCard from './SongCard.js'
+import Song from './Song.js'
 import MUIEditSongModal from './MUIEditSongModal'
 import MUIRemoveSongModal from './MUIRemoveSongModal'
 import Box from '@mui/material/Box';
@@ -13,8 +14,9 @@ import AddIcon from '@mui/icons-material/Add';
     
     @author McKilla Gorilla
 */
-function WorkspaceScreen() {
+function WorkspaceScreen(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { songsArray, isPublished } = props;
     store.history = useHistory();
 
     function handleAddNewSong() {
@@ -30,7 +32,22 @@ function WorkspaceScreen() {
     }
 
     let songs = "";
-    if(store.currentList) {
+    if(isPublished) {
+        songs = 
+        <List sx={{ width: '100%' }}>
+            {
+                songsArray.map((song, index) => (
+                    <Song 
+                        id={'playlist-song-' + (index)}
+                        key={'playlist-song-' + (index)}
+                        index={index}
+                        song={song}
+                    />
+                ))
+            }
+        </List>
+    }
+    else if(store.currentList) {
         songs = 
         <List 
             id="playlist-cards" 

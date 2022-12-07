@@ -124,13 +124,14 @@ registerUser = async (req, res) => {
         }
         console.log("password and password verify match");
         const existingUser = await User.findOne({ email: email });
+        const existingUsername = await User.findOne({ userName: userName});
         console.log("existingUser: " + existingUser);
-        if (existingUser) {
+        if (existingUser || existingUsername) {
             return res
                 .status(400)
                 .json({
                     success: false,
-                    errorMessage: "An account with this email address already exists."
+                    errorMessage: "An account with this email address or user name already exists."
                 })
         }
 

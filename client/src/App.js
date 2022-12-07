@@ -12,7 +12,8 @@ import {
     WorkspaceScreen,
     HomeScreen,
     SplashScreen,
-    MainScreen
+    MainScreen,
+    GuestScreen
 } from './components'
 /*
     This is our application's top-level component.
@@ -33,6 +34,7 @@ const App = () => {
                     {/* <AppBanner /> */}
                     <Switch>
                         <Route path="/" exact component={SplashScreen}/>
+                        <Route path="/guest" exact component={GuestScreen}/>
                         <Route path="/main/" exact component={MainScreen} />
                         <Route path="/login/" exact component={LoginScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />

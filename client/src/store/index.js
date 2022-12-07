@@ -136,9 +136,9 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     currentSongPlaying: store.currentSongPlaying,
-                    homeScreen: store.homeScreen,
-                    communityScreen: store.communityScreen,
-                    userScreen: store.userScreen,
+                    homeScreen: true,
+                    communityScreen: false,
+                    userScreen: false,
                     listsSearch: [],
                     listSearchByUser: []
                 })
@@ -457,7 +457,7 @@ function GlobalStoreContextProvider(props) {
     store.duplicateList = function(id) {
         // console.log(id);
         async function getListToDuplicate(id) {
-            let response = await api.getPlaylistById(id);
+            let response = await api.getPublishedPlaylistById(id);
             if(response.data.success) {
                 let playlist = response.data.playlist;
                 console.log(playlist);
@@ -500,17 +500,21 @@ function GlobalStoreContextProvider(props) {
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {
         async function asyncLoadIdNamePairs() {
-            const response = await api.getPlaylistPairs();
-            if (response.data.success) {
-                let pairsArray = response.data.idNamePairs;
-                console.log(pairsArray);
+            try {
+                const response = await api.getPlaylistPairs();
+                if (response.data.success) {
+                    let pairsArray = response.data.idNamePairs;
+                    console.log(pairsArray);
+                    storeReducer({
+                        type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
+                        payload: pairsArray
+                    });
+                }
+            } catch(error) {
                 storeReducer({
                     type: GlobalStoreActionType.LOAD_ID_NAME_PAIRS,
-                    payload: pairsArray
-                });
-            }
-            else {
-                console.log("API FAILED TO GET THE LIST PAIRS");
+                    payload: []
+                })
             }
         }
         asyncLoadIdNamePairs();
@@ -659,6 +663,24 @@ function GlobalStoreContextProvider(props) {
                     console.log(store.currentList);
                 }
             }
+        }
+        asyncSetCurrentList(id);
+    }
+
+    store.setCurrentListForPublished = function(id) {
+        async function asyncSetCurrentList(id) {
+            let response = await api.getPublishedPlaylistById(id);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+
+                    storeReducer({
+                        type: GlobalStoreActionType.SET_CURRENT_LIST,
+                        payload: playlist
+                    });
+                    store.currentList = playlist;
+                    // store.loadIdNamePairs();
+                    console.log(store.currentList);
+                }    
         }
         asyncSetCurrentList(id);
     }

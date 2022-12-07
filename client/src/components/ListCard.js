@@ -47,7 +47,12 @@ function ListCard(props) {
             console.log("load " + event.target.id);
             // setExpanded(!expanded);
             // CHANGE THE CURRENT LIST
-            store.setCurrentList(id);
+            if(idNamePair.published) {
+                store.setCurrentListForPublished(id);
+            } else {
+                store.setCurrentList(id);
+            }
+            
         }
     }
 
@@ -182,7 +187,7 @@ function ListCard(props) {
                     </Box> */}
                 </AccordionSummary>
                 <AccordionDetails>
-                    <WorkspaceScreen />
+                    <WorkspaceScreen songsArray={idNamePair.songs} isPublished={idNamePair.published}/>
                     <Stack direction="row" justifyContent="space-between">
                         <Stack direction="row" spacing={0}>
                             <Button variant="contained"

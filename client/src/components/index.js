@@ -15,6 +15,7 @@ import Statusbar from './Statusbar'
 import WorkspaceScreen from './WorkspaceScreen'
 import MainScreen from './MainScreen'
 import RightComponent from './RightComponent'
+import GuestScreen from './GuestScreen'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -38,4 +39,5 @@ export {
     Statusbar, 
     WorkspaceScreen,
     MainScreen,
-    RightComponent }
+    RightComponent,
+    GuestScreen }

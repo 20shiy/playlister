@@ -17,7 +17,7 @@ export default function SplashScreen() {
                 <h5>A platform that allows you to create and share Youtube music playlists.</h5>
                 <Link href='/register/'><Button sx={{mt:3}} className="splashButton" variant="contained">Create Account</Button></Link>
                 <Link href='/login/'><Button sx={{m:2}} className="splashButton" variant="contained">Login</Button></Link>
-                <Link href='/main/'><Button className="splashButton" variant="contained">Continue as guest</Button></Link>
+                <Link href='/guest/'><Button className="splashButton" variant="contained">Continue as guest</Button></Link>
             </div>
         </div>
     )

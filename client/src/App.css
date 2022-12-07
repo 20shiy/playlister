@@ -166,7 +166,7 @@ body {
   display: flex;
   flex-direction: column;
   overflow: scroll;
-  /* background-color: #302a6e; */
+  background-color: #302a6e;
   border-radius: 10px;
 }
 
