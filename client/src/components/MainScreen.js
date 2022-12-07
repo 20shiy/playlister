@@ -22,6 +22,7 @@ const MainScreen = () => {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [text, setText] = useState("");
     const isMenuOpen = Boolean(anchorEl);
 
     function handleCreateNewList() {
@@ -58,6 +59,22 @@ const MainScreen = () => {
     function handleSelectUser() {
         store.userScreenSelected();
     }
+
+    function handleKeyPress(event) {
+        if(store.communityScreen) {
+            console.log("key press!");
+            if (event.code === "Enter") {
+                console.log(event.target.value);
+                store.loadListsSearched(event.target.value);
+            }
+            console.log(store.listsSearch);
+        }
+    }
+
+    // function handleUpdateText(event) {
+    //     // setText(event.target.value);
+    //     console.log("uodate text");
+    // }
 
     const menuId = 'primary-search-account-menu';
     const loggedOutMenu = (
@@ -164,15 +181,18 @@ const MainScreen = () => {
                 </div>
                 
                 <Paper
-                    component="form"
+                    // component="form"
                     sx={{ p: '2px 4px', ml:-5, display: 'flex', alignItems: 'center', width: 400 }}
                 >
                     <InputBase
                         className="searchBar"
+                        onKeyPress={handleKeyPress}
+                        // onChange={handleUpdateText}
                         sx={{ ml: 1, flex: 1 }}
                         placeholder="Search"
-                        inputProps={{ 'aria-label': 'search google maps' }}
+                        inputProps={{ 'aria-label': 'search' }}
                     />
+                    {/* <input className='modal-textfield' type="text" /> */}
                 </Paper>
                 <div id="sortSection">
                     <b>SORT BY</b>

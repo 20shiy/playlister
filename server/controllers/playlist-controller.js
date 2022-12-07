@@ -120,6 +120,31 @@ getPlaylistById = async (req, res) => {
         asyncFindUser(list);
     }).catch(err => console.log(err))
 }
+searchPlaylists = async(req, res) => {
+    let listname = req.params.listname;
+    console.log(listname + "============================");
+    await Playlist.find({name: {$regex: ""+listname, $options: "i"}}, (err, lists) => {
+        if(err) {
+            console.log(err);
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            return [];
+        }
+
+        async function checkPublished(lists) {
+            let finalLists = [];
+            for(let j=0; j<lists.length; j++) {
+                let playlist = lists[j];
+                if(playlist.published) {
+                    finalLists.push(playlist);
+                }
+            }
+            console.log(finalLists);
+            console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+            return res.status(200).json({success: true, listFoundByName: finalLists})
+        }
+        checkPublished(lists);
+    }).catch(err => console.log("search list by name failed: " + err));
+}
 getPlaylistPairs = async (req, res) => {
     if(auth.verifyUser(req) === null){
         return res.status(400).json({
@@ -217,6 +242,11 @@ updatePlaylist = async (req, res) => {
                     list.name = body.playlist.name;
                     list.songs = body.playlist.songs;
                     list.published = body.playlist.published;
+                    list.datePublished = body.playlist.datePublished;
+                    list.likes = body.playlist.likes;
+                    list.dislikes = body.playlist.dislikes;
+                    list.comments = body.playlist.comments;
+
                     list
                         .save()
                         .then(() => {
@@ -250,5 +280,6 @@ module.exports = {
     getPlaylistById,
     getPlaylistPairs,
     getPlaylists,
-    updatePlaylist
+    updatePlaylist,
+    searchPlaylists
 }

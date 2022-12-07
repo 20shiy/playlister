@@ -38,6 +38,21 @@ const HomeScreen = () => {
             }
             
             </List>;
+    } else if(store && store.communityScreen) {
+        listCard = 
+            <List sx={{width: '60%' }}>
+            {
+                store.listsSearch.map((pair) => (
+                    <ListCard
+                        key={pair._id}
+                        idNamePair={pair}
+                        selected={false}
+                    />
+                ))
+                
+            }
+            
+            </List>;
     }
     return (
         // <div id="playlist-selector">

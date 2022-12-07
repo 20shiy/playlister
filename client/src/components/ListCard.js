@@ -33,6 +33,7 @@ function ListCard(props) {
 
 
     function handleLoadList(event, id) {
+        store.clearTrans();
         if(event.detail == 2) {
             handleToggleEdit(event);
             return;

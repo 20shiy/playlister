@@ -33,7 +33,8 @@ export const GlobalStoreActionType = {
     REMOVE_SONG: "REMOVE_SONG",
     HIDE_MODALS: "HIDE_MODALS",
     LOAD_CURRENT_SONG: "LOAD_CURRENT_SONG",
-    TRACK_SCREEN_SELECTED: "TRACK_SCREEN_SELECTED"
+    TRACK_SCREEN_SELECTED: "TRACK_SCREEN_SELECTED",
+    LOAD_SEARCH_LISTS: "LOAD_SEARCH_LISTS"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -64,7 +65,8 @@ function GlobalStoreContextProvider(props) {
         currentSongPlaying: 0,
         homeScreen: true,
         communityScreen: false,
-        userScreen: false
+        userScreen: false,
+        listsSearch: []
     });
     const history = useHistory();
 
@@ -94,7 +96,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -112,7 +115,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 })
             }
             // CREATE A NEW LIST
@@ -130,7 +134,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -148,7 +153,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -166,7 +172,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             // UPDATE A LIST
@@ -184,7 +191,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             // START EDITING A LIST NAME
@@ -202,7 +210,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             // 
@@ -220,7 +229,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -237,7 +247,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -254,7 +265,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: store.currentSongPlaying,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             case GlobalStoreActionType.LOAD_CURRENT_SONG: {
@@ -271,7 +283,8 @@ function GlobalStoreContextProvider(props) {
                     currentSongPlaying: payload,
                     homeScreen: store.homeScreen,
                     communityScreen: store.communityScreen,
-                    userScreen: store.userScreen
+                    userScreen: store.userScreen,
+                    listsSearch: store.listsSearch
                 });
             }
             case GlobalStoreActionType.TRACK_SCREEN_SELECTED: {
@@ -285,10 +298,29 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    currentSongPlaying: payload,
+                    currentSongPlaying: store.currentSongPlaying,
                     homeScreen: payload.homeScreen,
                     communityScreen: payload.communityScreen,
-                    userScreen: payload.userScreen
+                    userScreen: payload.userScreen,
+                    listsSearch: store.listsSearch
+                });
+            }
+            case GlobalStoreActionType.LOAD_SEARCH_LISTS: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    currentSongPlaying: store.currentSongPlaying,
+                    homeScreen: store.homeScreen,
+                    communityScreen: store.communityScreen,
+                    userScreen: store.userScreen,
+                    listsSearch: payload
                 });
             }
             default:
@@ -360,6 +392,10 @@ function GlobalStoreContextProvider(props) {
         history.push("/");
     }
 
+    store.clearTrans = function() {
+        tps.clearAllTransactions();
+    }
+
     // THIS FUNCTION CREATES A NEW LIST
     store.createNewList = async function () {
         let newListName = "Untitled" + store.idNamePairs.length;
@@ -394,11 +430,11 @@ function GlobalStoreContextProvider(props) {
                 let newName = "Copy of " + playlist.name;
                 let newSongs = playlist.songs;
                 let email = auth.user.email;
-                // let userName = auth.user.userName;
+                let userName = auth.user.userName;
                 // console.log(newName);
 
-                // const res = await api.createPlaylist(newName, newSongs, email, userName, false);
-                const res = await api.createPlaylist(newName, newSongs, email);
+                const res = await api.createPlaylist(newName, newSongs, email, userName, false);
+                // const res = await api.createPlaylist(newName, newSongs, email);
                 if (res.status === 201) {
                     tps.clearAllTransactions();
                     let newList = response.data.playlist;
@@ -444,6 +480,26 @@ function GlobalStoreContextProvider(props) {
             }
         }
         asyncLoadIdNamePairs();
+    }
+
+    store.loadListsSearched = function(listname) {
+        async function asyncLoadListsSearched(name) {
+            const response = await api.searchByPlaylistName(name);
+            if(response.data.success) {
+                console.log("success!+++++++++");
+                let searchedLists = response.data.listFoundByName;
+                console.log(searchedLists);
+                
+                storeReducer({
+                    type: GlobalStoreActionType.LOAD_SEARCH_LISTS,
+                    payload: searchedLists
+                });
+                
+            }
+        }
+        asyncLoadListsSearched(listname);
+        // console.log(store.listsSearch);
+        
     }
 
     // THE FOLLOWING 5 FUNCTIONS ARE FOR COORDINATING THE DELETION
@@ -701,7 +757,7 @@ function GlobalStoreContextProvider(props) {
         })
 
     }
-    
+
     store.incSong = function() {
         storeReducer({
             type: GlobalStoreActionType.LOAD_CURRENT_SONG,
